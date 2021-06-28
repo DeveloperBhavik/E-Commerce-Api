@@ -10,15 +10,15 @@ public class JwtResponse {
 	
 	private String type = "Bearer";
 	
-	private String firstname;
+	private String email;
 
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public JwtResponse(String token, String type, String firstname, Collection<? extends GrantedAuthority> collection) {
+	public JwtResponse(String token, String type, String email, Collection<? extends GrantedAuthority> collection) {
 		super();
 		this.token = token;
 		this.type = type;
-		this.firstname = firstname;
+		this.email = email;
 		this.authorities = collection;
 	}
 
@@ -38,12 +38,12 @@ public class JwtResponse {
 		this.type = type;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
