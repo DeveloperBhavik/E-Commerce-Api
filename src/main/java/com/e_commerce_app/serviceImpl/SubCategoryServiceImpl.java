@@ -71,7 +71,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	public ResponseData<SubCategoryResponse> getSubCategoryById(Long id) {
 		
 		Optional<SubCategory> subCategoryOptional = subCategoryRepository.findById(id);
-		ResponseData<SubCategoryResponse> responseData  = subCategoryOptional.isPresent() ? new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_FETCH_SUCCESS, setData(subCategoryRepository.findById(id).get()), 200) : new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_NOT_FOUND, null, 420);
+		ResponseData<SubCategoryResponse> responseData  = subCategoryOptional.isPresent() ? new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_FETCH_SUCCESS, setData(subCategoryOptional.get()), 200) : new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_NOT_FOUND, null, 420);
 		return responseData;
 	}
 
@@ -98,17 +98,8 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	public Object getListOfAllSubCategories() {
 		
 		List<SubCategory> subCategories = (List<SubCategory>) subCategoryRepository.findAll();
-		List<ResponseData<SubCategory>> responseDatas = new ArrayList<ResponseData<SubCategory>>();
-		subCategories.stream().forEach(elem -> responseDatas.add(setDataInResponse(elem)));
+		List<ResponseData<SubCategoryResponse>> responseDatas = new ArrayList<ResponseData<SubCategoryResponse>>();
+		subCategories.stream().forEach(elem -> responseDatas.add(new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_LIST_SUCCESS, setData(elem), 200)));
 		return responseDatas;
-	}
-	
-	/**
-	 * Set data in response
-	 * @param subCategory
-	 * @return
-	 */
-	private ResponseData<SubCategory> setDataInResponse(SubCategory subCategory) {
-		return new ResponseData<SubCategory>(MessageConstants.SUB_CATEGORY_LIST_SUCCESS, subCategory, 200);
 	}
 }

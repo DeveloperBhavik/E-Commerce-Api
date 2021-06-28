@@ -2,13 +2,16 @@ package com.e_commerce_app.response;
 
 import com.e_commerce_app.entity.Order;
 import com.e_commerce_app.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class OrderDetailResponse {
 
 	private Long id;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Order order;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Product product;
 	
 	private int price;

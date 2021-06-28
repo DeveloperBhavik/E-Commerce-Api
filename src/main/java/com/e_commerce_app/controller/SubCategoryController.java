@@ -95,7 +95,7 @@ public class SubCategoryController {
 	@GetMapping("{id}")
 	@ApiOperation(value = "Get", notes = "Get Sub-Category Details By Id")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<SubCategoryResponse> getSubCategoryById(@PathVariable("id") Long id) {
+	public Object getSubCategoryById(@PathVariable("id") Long id) {
 		try {
 			return subCategoryService.getSubCategoryById(id);
 		} catch (Exception e) {

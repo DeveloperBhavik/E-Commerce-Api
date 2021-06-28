@@ -2,6 +2,7 @@ package com.e_commerce_app.response;
 
 import com.e_commerce_app.entity.Category;
 import com.e_commerce_app.entity.SubCategory;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class ProductResponse {
 
@@ -13,8 +14,10 @@ public class ProductResponse {
 	
 	private int quantity;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Category category;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private SubCategory subCategory;
 	
 	private String description;

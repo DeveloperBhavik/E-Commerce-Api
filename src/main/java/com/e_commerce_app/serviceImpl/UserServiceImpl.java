@@ -166,17 +166,8 @@ public class UserServiceImpl implements UserService {
 	public Object getListOfAllUser() {
 		
 		List<User> users = ((List<User>) userRepository.findAll()).stream().filter(u->u.getActive() == 1).collect(Collectors.toList());
-		List<ResponseData<User>> responseDatas = new ArrayList<ResponseData<User>>();
-		users.stream().forEach(elem -> responseDatas.add(setDataInResponse(elem)));
+		List<ResponseData<UserResponse>> responseDatas = new ArrayList<ResponseData<UserResponse>>();
+		users.stream().forEach(elem -> responseDatas.add(new ResponseData<UserResponse>(MessageConstants.USER_LIST_SUCCESS, setData(elem), 200)));
 		return responseDatas;
-	}
-	
-	/**
-	 * Set data in response
-	 * @param category
-	 * @return
-	 */
-	private ResponseData<User> setDataInResponse(User user) {
-		return new ResponseData<User>(MessageConstants.USER_LIST_SUCCESS, user, 200);
 	}
 }

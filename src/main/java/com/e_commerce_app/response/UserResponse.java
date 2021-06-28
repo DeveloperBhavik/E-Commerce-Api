@@ -8,8 +8,6 @@ public class UserResponse {
 	
 	private String email;
 	
-	
-
 	public Long getId() {
 		return id;
 	}

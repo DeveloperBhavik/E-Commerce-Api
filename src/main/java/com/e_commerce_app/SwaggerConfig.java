@@ -25,4 +25,6 @@ public class SwaggerConfig {
 		ApiInfo apiInfo = new ApiInfo("E-Commerce Rest API documentation", "This Pages Documents E-Commerce App Restful Web Service Endpoints Developed By Tech R.", "V.3.0", null, null,  "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
 		return apiInfo;
 	}
+	
+	
 }

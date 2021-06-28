@@ -95,17 +95,8 @@ public class OrderServiceImpl implements OrderService {
 	public Object getListOfAllOrder() {
 		
 		List<Order> orders = (List<Order>) orderRepository.findAll();
-		List<ResponseData<Order>> responseDatas = new ArrayList<ResponseData<Order>>();
-		orders.stream().forEach(elem -> responseDatas.add(setDataInResponse(elem)));
+		List<ResponseData<OrderResponse>> responseDatas = new ArrayList<ResponseData<OrderResponse>>();
+		orders.stream().forEach(elem -> responseDatas.add(new ResponseData<OrderResponse>(MessageConstants.ORDER_LIST_SUCCESS, setData(elem), 200)));
 		return responseDatas;
-	}
-	
-	/**
-	 * Set data in response
-	 * @param order
-	 * @return
-	 */
-	private ResponseData<Order> setDataInResponse(Order order) {
-		return new ResponseData<Order>(MessageConstants.ORDER_LIST_SUCCESS, order, 200);
 	}
 }

@@ -117,17 +117,8 @@ public class ProductServiceImpl implements ProductService {
 	public Object getListOfAllProduct() {
 		
 		List<Product> products = ((List<Product>) productRepository.findAll()).stream().filter(p->p.getActive() == 1).collect(Collectors.toList());
-		List<ResponseData<Product>> responseDatas = new ArrayList<ResponseData<Product>>();
-		products.stream().forEach(elem -> responseDatas.add(setDataInResponse(elem)));
+		List<ResponseData<ProductResponse>> responseDatas = new ArrayList<ResponseData<ProductResponse>>();
+		products.stream().forEach(elem -> responseDatas.add(new ResponseData<ProductResponse>(MessageConstants.PRODUCT_LIST_SUCCESS, setData(elem), 200)));
 		return responseDatas;
-	}
-	
-	/**
-	 * Set data in response
-	 * @param product
-	 * @return
-	 */
-	private ResponseData<Product> setDataInResponse(Product product) {
-		return new ResponseData<Product>(MessageConstants.USER_LIST_SUCCESS, product, 200);
 	}
 }

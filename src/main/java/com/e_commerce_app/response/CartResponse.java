@@ -2,13 +2,16 @@ package com.e_commerce_app.response;
 
 import com.e_commerce_app.entity.Product;
 import com.e_commerce_app.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class CartResponse {
 
 	private Long id;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private User user;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Product product;
 	
 	private int quantity;

@@ -3,11 +3,13 @@ package com.e_commerce_app.response;
 import java.util.Date;
 
 import com.e_commerce_app.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class OrderResponse {
 
 	private Long id;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private User user;
 	
 	private int amount;

@@ -101,17 +101,8 @@ public class CategoryServiceImpl implements CategoryService {
 	public Object getListOfAllCategories() {
 		
 		List<Category> categories = (List<Category>) categoryRepository.findAll();
-		List<ResponseData<Category>> responseDatas = new ArrayList<ResponseData<Category>>();
-		categories.stream().forEach(elem -> responseDatas.add(setDataInResponse(elem)));
+		List<ResponseData<CategoryResponse>> responseDatas = new ArrayList<ResponseData<CategoryResponse>>();
+		categories.stream().forEach(elem -> responseDatas.add(new ResponseData<CategoryResponse>(MessageConstants.CATEGORY_LIST_SUCCESS, setData(elem), 200)));
 		return responseDatas;
-	}
-	
-	/**
-	 * Set data in response
-	 * @param category
-	 * @return
-	 */
-	private ResponseData<Category> setDataInResponse(Category category) {
-		return new ResponseData<Category>(MessageConstants.CATEGORY_LIST_SUCCESS, category, 200);
 	}
 }

@@ -11,7 +11,7 @@ public interface SubCategoryService {
 
 	SubCategory checkSubCategoryExistence(String name);
 
-	ResponseData<SubCategoryResponse> getSubCategoryById(Long id);
+	Object getSubCategoryById(Long id);
 
 	ResponseData<SubCategoryResponse> deleteSubCategoryById(Long id);
 
