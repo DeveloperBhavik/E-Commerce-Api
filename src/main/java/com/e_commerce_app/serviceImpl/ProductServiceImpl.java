@@ -7,13 +7,20 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.e_commerce_app.entity.Cart;
+import com.e_commerce_app.entity.Category;
+import com.e_commerce_app.entity.Order;
 import com.e_commerce_app.entity.OrderDetail;
 import com.e_commerce_app.entity.Product;
+import com.e_commerce_app.entity.SubCategory;
 import com.e_commerce_app.repository.CartRepository;
+import com.e_commerce_app.repository.CategoryRepository;
 import com.e_commerce_app.repository.OrderDetailRepository;
+import com.e_commerce_app.repository.OrderRepository;
 import com.e_commerce_app.repository.ProductRepository;
+import com.e_commerce_app.repository.SubCategoryRepository;
 import com.e_commerce_app.request.ProductRequest;
 import com.e_commerce_app.response.ProductResponse;
 import com.e_commerce_app.response.ResponseData;
@@ -32,23 +39,38 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private CartRepository cartRepository;
 	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private SubCategoryRepository subCategoryRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
 	/**
 	 * Save product
 	 */
 	@Override
-	public ResponseData<ProductResponse> saveProduct(ProductRequest productRequest) {
+	public Object saveProduct(ProductRequest productRequest) {
 		
+		Optional<Category> categoryOptional = categoryRepository.findById(productRequest.getCategoryId());
+		if(!categoryOptional.isPresent())
+			return new ResponseData<ProductResponse>(MessageConstants.CATEGORY_NOT_FOUND, null, 420);
+		Optional<SubCategory> subCategoryOptional = subCategoryRepository.findById(productRequest.getSubCategoryId());
+		if(!subCategoryOptional.isPresent())
+			return new ResponseData<ProductResponse>(MessageConstants.SUB_CATEGORY_NOT_FOUND, null, 420);
 		String message = null;
 		message = (productRequest.getId() != null ? MessageConstants.PRODUCT_UPDATE_SUCCESS : MessageConstants.PRODUCT_SAVE_SUCCESS);
 		Product product = new Product();
 		product.setId(productRequest.getId() != null ? productRequest.getId() : null);
 		product.setActive(1);
-		product.setCategory(productRequest.getCategory());
+		product.setCategory(categoryOptional.get());
 		product.setDescription(productRequest.getDescription());
 		product.setName(productRequest.getName());
 		product.setPrice(productRequest.getPrice());
 		product.setQuantity(productRequest.getQuantity());
-		product.setSubCategory(productRequest.getSubCategory());
+		product.setSubCategory(subCategoryOptional.get());
 		product.setWarrantyInfo(productRequest.getWarrantyInfo());
 		productRepository.save(product);
 		return new ResponseData<ProductResponse>(message, setData(product), 200);
@@ -63,12 +85,12 @@ public class ProductServiceImpl implements ProductService {
 		
 		ProductResponse productResponse = new ProductResponse();
 		productResponse.setId(product.getId());
-		productResponse.setCategory(product.getCategory());
+		productResponse.setCategoryName(product.getCategory().getName());
 		productResponse.setDescription(product.getDescription());
 		productResponse.setName(product.getName());
 		productResponse.setPrice(product.getPrice());
 		productResponse.setQuantity(product.getQuantity());
-		productResponse.setSubCategory(product.getSubCategory());
+		productResponse.setSubCategoryName(product.getSubCategory().getName());
 		productResponse.setWarrantyInfo(product.getWarrantyInfo());
 		return productResponse;
 	}
@@ -101,11 +123,23 @@ public class ProductServiceImpl implements ProductService {
 		Optional<Product> productOptional = productRepository.findById(id);
 		ResponseData<ProductResponse> responseData  = productOptional.isPresent() ? new ResponseData<ProductResponse>(MessageConstants.PRODUCT_DELETE_SUCCESS, setData(productOptional.get()), 200) : new ResponseData<ProductResponse>(MessageConstants.PRODUCT_NOT_FOUND, null, 420);
 	    if(responseData.getStatus() == 200) { 
-	    	Optional<Cart> cartOptional = Optional.ofNullable(cartRepository.findByProductName(productOptional.get().getName()));
-	    	if(cartOptional.isPresent()) { cartRepository.deleteById(cartOptional.get().getId()); }
-	    	Optional<OrderDetail> orderDetailOptional = Optional.ofNullable(orderDetailRepository.findByProductName(productOptional.get().getName()));
-	    	if(orderDetailOptional.isPresent()) { orderDetailRepository.deleteById(orderDetailOptional.get().getId()); }
-	    	Product product = productOptional.get(); product.setActive(0); productRepository.save(product); 
+	    	List<OrderDetail> orderDetails = orderDetailRepository.findByProductName(productOptional.get().getName());
+			if (!CollectionUtils.isEmpty(orderDetails)) {
+				for (OrderDetail orderDetail : orderDetails) {
+					List<Order> orders = orderRepository.findByUserEmail(orderDetail.getOrder().getUser().getEmail());
+					for (Order order : orders) {
+						orderDetailRepository.deleteById(orderDetail.getId());
+						orderRepository.deleteById(order.getId());
+					}
+				}
+			}
+			List<Cart> carts = cartRepository.findByProductName(productOptional.get().getName());
+			if (!CollectionUtils.isEmpty(carts)) {
+				for (Cart cart : carts) {
+					cartRepository.deleteById(cart.getId());
+				}
+			}
+			productRepository.deleteById(productOptional.get().getId());
 	    }
 		return responseData;
 	}

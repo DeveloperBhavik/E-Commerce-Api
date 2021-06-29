@@ -6,7 +6,7 @@ import com.e_commerce_app.response.ResponseData;
 
 public interface OrderDetailService {
 
-	ResponseData<OrderDetailResponse> saveOrderDetail(OrderDetailRequest orderDetailRequest);
+	Object saveOrderDetail(OrderDetailRequest orderDetailRequest);
 
 	ResponseData<OrderDetailResponse> getOrderDetailById(Long id);
 

@@ -65,9 +65,9 @@ public class SubCategoryController {
 	@PostMapping("save")
 	@ApiOperation(value = "Save", notes = "Save Sub-Category Basic Details")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<SubCategoryResponse> saveCategory(@RequestBody SubCategoryRequest subCategoryRequest) {
+	public Object saveCategory(@RequestBody SubCategoryRequest subCategoryRequest) {
 		try {
-			ResponseData<SubCategoryResponse> response = (subCategoryRequest.getId() == null ? checkSubCategoryNameExistence(subCategoryRequest):subCategoryService.saveSubCategory(subCategoryRequest));
+			Object response = (subCategoryRequest.getId() == null ? checkSubCategoryNameExistence(subCategoryRequest):subCategoryService.saveSubCategory(subCategoryRequest));
 			return response;
 		} catch (Exception e) {
 			LOGGER.error("Exception Occurred When Try To Save Sub-Category Details", e);
@@ -80,10 +80,10 @@ public class SubCategoryController {
 	 * @param subCategoryRequest
 	 * @return
 	 */
-	private ResponseData<SubCategoryResponse> checkSubCategoryNameExistence(SubCategoryRequest subCategoryRequest) {
+	private Object checkSubCategoryNameExistence(SubCategoryRequest subCategoryRequest) {
 		
 		SubCategory subCategory = subCategoryService.checkSubCategoryExistence(subCategoryRequest.getName());
-		ResponseData<SubCategoryResponse> response = (subCategory == null ? subCategoryService.saveSubCategory(subCategoryRequest) : new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_EXIST, null, 420));
+		Object response = (subCategory == null ? subCategoryService.saveSubCategory(subCategoryRequest) : new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_EXIST, null, 420));
 		return response;
 	}
 	

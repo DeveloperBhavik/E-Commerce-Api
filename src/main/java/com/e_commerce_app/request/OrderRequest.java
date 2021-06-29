@@ -2,8 +2,6 @@ package com.e_commerce_app.request;
 
 import java.util.Date;
 
-import com.e_commerce_app.entity.User;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class OrderRequest {
@@ -11,12 +9,13 @@ public class OrderRequest {
 	@ApiModelProperty(example = "null")
 	private Long id;
 	
-	private User user;
+	private Long userId;
 	
 	private int amount;
 	
 	private Date date;
 	
+	@ApiModelProperty(example = "null")
 	private String status;
 
 	public Long getId() {
@@ -27,12 +26,12 @@ public class OrderRequest {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public int getAmount() {

@@ -1,9 +1,5 @@
 package com.e_commerce_app.response;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-
 public class JwtResponse {
 	
 	private String token;
@@ -12,14 +8,14 @@ public class JwtResponse {
 	
 	private String email;
 
-	private Collection<? extends GrantedAuthority> authorities;
+	private String role;
 	
-	public JwtResponse(String token, String type, String email, Collection<? extends GrantedAuthority> collection) {
+	public JwtResponse(String token, String type, String email, String role) {
 		super();
 		this.token = token;
 		this.type = type;
 		this.email = email;
-		this.authorities = collection;
+		this.role = role;
 	}
 
 	public String getToken() {
@@ -46,11 +42,11 @@ public class JwtResponse {
 		this.email = email;
 	}
 
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+	public String getRole() {
+		return role;
 	}
 
-	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-		this.authorities = authorities;
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

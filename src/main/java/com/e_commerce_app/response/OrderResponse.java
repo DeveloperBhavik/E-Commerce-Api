@@ -2,15 +2,11 @@ package com.e_commerce_app.response;
 
 import java.util.Date;
 
-import com.e_commerce_app.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class OrderResponse {
 
 	private Long id;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private User user;
+	private String userName;
 	
 	private int amount;
 	
@@ -26,12 +22,12 @@ public class OrderResponse {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public int getAmount() {

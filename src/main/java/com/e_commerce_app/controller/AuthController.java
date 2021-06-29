@@ -59,7 +59,7 @@ public class AuthController {
         );
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String accessToken = tokenProvider.createAccessToken(authentication);
-		return new JwtResponse(accessToken, "Bearer", authentication.getName(), authentication.getAuthorities());
+		return new JwtResponse(accessToken, "Bearer", authentication.getName(), authentication.getAuthorities().toString());
 	}
 	
 	/**

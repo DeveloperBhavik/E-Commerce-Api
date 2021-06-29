@@ -1,16 +1,12 @@
 package com.e_commerce_app.response;
 
-import com.e_commerce_app.entity.Category;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class SubCategoryResponse {
 
 	private Long id;
 	
 	private String name;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Category category;
+	private String categoryName;
 	
 	public Long getId() {
 		return id;
@@ -28,11 +24,11 @@ public class SubCategoryResponse {
 		this.name = name;
 	}
 
-	public Category getCategory() {
-		return category;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 }

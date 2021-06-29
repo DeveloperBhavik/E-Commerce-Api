@@ -6,12 +6,22 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.e_commerce_app.entity.Cart;
+import com.e_commerce_app.entity.Category;
+import com.e_commerce_app.entity.Order;
+import com.e_commerce_app.entity.OrderDetail;
 import com.e_commerce_app.entity.Product;
 import com.e_commerce_app.entity.SubCategory;
+import com.e_commerce_app.repository.CartRepository;
+import com.e_commerce_app.repository.CategoryRepository;
+import com.e_commerce_app.repository.OrderDetailRepository;
+import com.e_commerce_app.repository.OrderRepository;
 import com.e_commerce_app.repository.ProductRepository;
 import com.e_commerce_app.repository.SubCategoryRepository;
 import com.e_commerce_app.request.SubCategoryRequest;
+import com.e_commerce_app.response.ProductResponse;
 import com.e_commerce_app.response.ResponseData;
 import com.e_commerce_app.response.SubCategoryResponse;
 import com.e_commerce_app.service.SubCategoryService;
@@ -26,18 +36,33 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
+	
 	/**
 	 * Save sub-category
 	 */
 	@Override
-	public ResponseData<SubCategoryResponse> saveSubCategory(SubCategoryRequest subCategoryRequest) {
+	public Object saveSubCategory(SubCategoryRequest subCategoryRequest) {
 		
+		Optional<Category> categoryOptional = categoryRepository.findById(subCategoryRequest.getCategoryId());
+		if(!categoryOptional.isPresent())
+			return new ResponseData<ProductResponse>(MessageConstants.CATEGORY_NOT_FOUND, null, 420);
 		String message = null;
 		message = (subCategoryRequest.getId() != null ? MessageConstants.SUB_CATEGORY_UPDATE_SUCCESS : MessageConstants.SUB_CATEGORY_SAVE_SUCCESS);
 		SubCategory subCategory = new SubCategory();
 		subCategory.setId(subCategoryRequest.getId() != null ? subCategoryRequest.getId() : null);
 		subCategory.setName(subCategoryRequest.getName());
-		subCategory.setCategory(subCategoryRequest.getCategory());
+		subCategory.setCategory(categoryOptional.get());
 		subCategoryRepository.save(subCategory);
 		return new ResponseData<SubCategoryResponse>(message, setData(subCategory), 200);
 	}
@@ -52,7 +77,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 		SubCategoryResponse subCategoryResponse = new SubCategoryResponse();
 		subCategoryResponse.setId(subCategory.getId());
 		subCategoryResponse.setName(subCategory.getName());
-		subCategoryResponse.setCategory(subCategory.getCategory());
+		subCategoryResponse.setCategoryName(subCategory.getCategory().getName());
 		return subCategoryResponse;
 	}
 	
@@ -84,9 +109,29 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 		Optional<SubCategory> subCategoryOptional = subCategoryRepository.findById(id);
 		ResponseData<SubCategoryResponse> responseData  = subCategoryOptional.isPresent() ? new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_DELETE_SUCCESS, setData(subCategoryRepository.findById(id).get()), 200) : new ResponseData<SubCategoryResponse>(MessageConstants.SUB_CATEGORY_NOT_FOUND, null, 420);
 	    if(responseData.getStatus() == 200) { 
-	    	Optional<Product> productOptional = Optional.ofNullable(productRepository.findBySubCategoryName(subCategoryOptional.get().getName()));
-	    	if(productOptional.isPresent()) {Product product = productOptional.get(); product.setActive(0); productRepository.save(product);}
-	    	subCategoryRepository.deleteById(id);
+	    	List<Product> products = productRepository.findBySubCategoryName(subCategoryOptional.get().getName());
+			if (!CollectionUtils.isEmpty(products)) {
+				for (Product product : products) {
+					List<OrderDetail> orderDetails = orderDetailRepository.findByProductName(product.getName());
+					if (!CollectionUtils.isEmpty(orderDetails)) {
+						for (OrderDetail orderDetail : orderDetails) {
+							List<Order> orders = orderRepository.findByUserEmail(orderDetail.getOrder().getUser().getEmail());
+							for (Order order : orders) {
+								orderDetailRepository.deleteById(orderDetail.getId());
+								orderRepository.deleteById(order.getId());
+							}
+						}
+					}
+					List<Cart> carts = cartRepository.findByProductName(product.getName());
+					if (!CollectionUtils.isEmpty(carts)) {
+						for (Cart cart : carts) {
+							cartRepository.deleteById(cart.getId());
+						}
+					}
+					productRepository.deleteById(product.getId());
+				}
+			}
+			subCategoryRepository.deleteById(subCategoryOptional.get().getId());
 	    }
 		return responseData;
 	}

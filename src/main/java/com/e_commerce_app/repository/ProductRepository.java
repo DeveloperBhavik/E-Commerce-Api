@@ -1,5 +1,7 @@
 package com.e_commerce_app.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,5 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 	Product findByCategoryName(String name);
 
-	Product findBySubCategoryName(String name);
+	List<Product> findBySubCategoryName(String name);
 }

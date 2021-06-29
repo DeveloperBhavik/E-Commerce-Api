@@ -1,8 +1,5 @@
 package com.e_commerce_app.request;
 
-import com.e_commerce_app.entity.Product;
-import com.e_commerce_app.entity.User;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class CartRequest {
@@ -10,9 +7,9 @@ public class CartRequest {
 	@ApiModelProperty(example = "null")
 	private Long id;
 	
-	private User user;
+	private Long userId;
 	
-	private Product product;
+	private Long productId;
 	
 	private int quantity;
 
@@ -24,20 +21,20 @@ public class CartRequest {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Long getProductId() {
+		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 	public int getQuantity() {

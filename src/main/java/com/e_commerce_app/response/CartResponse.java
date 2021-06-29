@@ -1,18 +1,12 @@
 package com.e_commerce_app.response;
 
-import com.e_commerce_app.entity.Product;
-import com.e_commerce_app.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class CartResponse {
 
 	private Long id;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private User user;
+	private String userName;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Product product;
+	private String productName;
 	
 	private int quantity;
 	
@@ -24,20 +18,20 @@ public class CartResponse {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public int getQuantity() {

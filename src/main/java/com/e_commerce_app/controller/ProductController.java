@@ -87,9 +87,9 @@ public class ProductController {
 	@PostMapping("save")
 	@ApiOperation(value = "Save", notes = "Save Product Basic Details")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<ProductResponse> saveProduct(@RequestBody ProductRequest productRequest) {
+	public Object saveProduct(@RequestBody ProductRequest productRequest) {
 		try {
-			ResponseData<ProductResponse> response = (productRequest.getId() == null ? checkProductNameExistence(productRequest):productService.saveProduct(productRequest));
+			Object response = (productRequest.getId() == null ? checkProductNameExistence(productRequest):productService.saveProduct(productRequest));
 			return response;
 		} catch (Exception e) {
 			LOGGER.error("Exception Occurred When Try To Save Product Details", e);
@@ -102,10 +102,10 @@ public class ProductController {
 	 * @param subCategoryRequest
 	 * @return
 	 */
-	private ResponseData<ProductResponse> checkProductNameExistence(ProductRequest productRequest) {
+	private Object checkProductNameExistence(ProductRequest productRequest) {
 		
 		Product product = productService.checkProductExistence(productRequest.getName());
-		ResponseData<ProductResponse> response = (product == null ? productService.saveProduct(productRequest) : new ResponseData<ProductResponse>(MessageConstants.PRODUCT_EXIST, null, 420));
+		Object response = (product == null ? productService.saveProduct(productRequest) : new ResponseData<ProductResponse>(MessageConstants.PRODUCT_EXIST, null, 420));
 		return response;
 	}
 	

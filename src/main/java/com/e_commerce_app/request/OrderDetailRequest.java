@@ -1,8 +1,5 @@
 package com.e_commerce_app.request;
 
-import com.e_commerce_app.entity.Order;
-import com.e_commerce_app.entity.Product;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class OrderDetailRequest {
@@ -10,9 +7,9 @@ public class OrderDetailRequest {
 	@ApiModelProperty(example = "null")
 	private Long id;
 	
-	private Order order;
+	private Long orderId;
 	
-	private Product product;
+	private Long productId;
 	
 	private int price;
 	
@@ -26,20 +23,20 @@ public class OrderDetailRequest {
 		this.id = id;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Long getOrderId() {
+		return orderId;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Long getProductId() {
+		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 	public int getPrice() {

@@ -7,7 +7,7 @@ import com.e_commerce_app.response.SubCategoryResponse;
 
 public interface SubCategoryService {
 
-	ResponseData<SubCategoryResponse> saveSubCategory(SubCategoryRequest subCategoryRequest);
+	Object saveSubCategory(SubCategoryRequest subCategoryRequest);
 
 	SubCategory checkSubCategoryExistence(String name);
 

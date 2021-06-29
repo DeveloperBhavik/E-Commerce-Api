@@ -1,9 +1,5 @@
 package com.e_commerce_app.request;
 
-import com.e_commerce_app.entity.Category;
-import com.e_commerce_app.entity.SubCategory;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class ProductRequest {
@@ -17,11 +13,9 @@ public class ProductRequest {
 	
 	private int quantity;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Category category;
+	private Long categoryId;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private SubCategory subCategory;
+	private Long subCategoryId;
 	
 	private String description;
 	
@@ -59,20 +53,20 @@ public class ProductRequest {
 		this.quantity = quantity;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public SubCategory getSubCategory() {
-		return subCategory;
+	public Long getSubCategoryId() {
+		return subCategoryId;
 	}
 
-	public void setSubCategory(SubCategory subCategory) {
-		this.subCategory = subCategory;
+	public void setSubCategoryId(Long subCategoryId) {
+		this.subCategoryId = subCategoryId;
 	}
 
 	public String getDescription() {

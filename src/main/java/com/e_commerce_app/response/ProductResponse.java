@@ -1,9 +1,5 @@
 package com.e_commerce_app.response;
 
-import com.e_commerce_app.entity.Category;
-import com.e_commerce_app.entity.SubCategory;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class ProductResponse {
 
 	private Long id;
@@ -14,11 +10,9 @@ public class ProductResponse {
 	
 	private int quantity;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Category category;
+	private String categoryName;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private SubCategory subCategory;
+	private String subCategoryName;
 	
 	private String description;
 	
@@ -56,20 +50,20 @@ public class ProductResponse {
 		this.quantity = quantity;
 	}
 
-	public Category getCategory() {
-		return category;
+	public String getCategoryName() {
+		return categoryName;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
-	public SubCategory getSubCategory() {
-		return subCategory;
+	public String getSubCategoryName() {
+		return subCategoryName;
 	}
 
-	public void setSubCategory(SubCategory subCategory) {
-		this.subCategory = subCategory;
+	public void setSubCategoryName(String subCategoryName) {
+		this.subCategoryName = subCategoryName;
 	}
 
 	public String getDescription() {

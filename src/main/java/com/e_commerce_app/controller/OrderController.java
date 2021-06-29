@@ -64,7 +64,7 @@ public class OrderController {
 	@PostMapping("save")
 	@ApiOperation(value = "Save", notes = "Save Product Basic Details")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<OrderResponse> saveOrder(@RequestBody OrderRequest orderRequest) {
+	public Object saveOrder(@RequestBody OrderRequest orderRequest) {
 		try {
 			return orderService.saveOrder(orderRequest);
 		} catch (Exception e) {

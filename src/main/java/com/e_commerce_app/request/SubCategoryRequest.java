@@ -1,7 +1,5 @@
 package com.e_commerce_app.request;
 
-import com.e_commerce_app.entity.Category;
-
 import io.swagger.annotations.ApiModelProperty;
 
 public class SubCategoryRequest {
@@ -11,7 +9,7 @@ public class SubCategoryRequest {
 	
 	private String name;
 	
-	private Category category;
+	private Long categoryId;
 
 	public Long getId() {
 		return id;
@@ -29,11 +27,11 @@ public class SubCategoryRequest {
 		this.name = name;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 }

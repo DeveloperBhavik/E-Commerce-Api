@@ -1,18 +1,16 @@
 package com.e_commerce_app.response;
 
-import com.e_commerce_app.entity.Order;
-import com.e_commerce_app.entity.Product;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Date;
 
 public class OrderDetailResponse {
 
 	private Long id;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Order order;
+	private Date orderDate;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Product product;
+	private String orderStatus;
+	
+	private String productName;
 	
 	private int price;
 	
@@ -26,20 +24,28 @@ public class OrderDetailResponse {
 		this.id = id;
 	}
 
-	public Order getOrder() {
-		return order;
+	public Date getOrderDate() {
+		return orderDate;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getOrderStatus() {
+		return orderStatus;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public int getPrice() {

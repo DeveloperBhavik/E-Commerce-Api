@@ -6,7 +6,7 @@ import com.e_commerce_app.response.ResponseData;
 
 public interface CartService {
 
-	ResponseData<CartResponse> saveCart(CartRequest cartRequest);
+	Object saveCart(CartRequest cartRequest);
 
 	ResponseData<CartResponse> getCartById(Long id);
 

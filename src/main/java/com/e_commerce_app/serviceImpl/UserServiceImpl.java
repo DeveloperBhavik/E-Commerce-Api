@@ -14,12 +14,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.e_commerce_app.entity.Cart;
 import com.e_commerce_app.entity.Order;
+import com.e_commerce_app.entity.OrderDetail;
 import com.e_commerce_app.entity.User;
 import com.e_commerce_app.enums.Role;
 import com.e_commerce_app.repository.CartRepository;
+import com.e_commerce_app.repository.OrderDetailRepository;
 import com.e_commerce_app.repository.OrderRepository;
 import com.e_commerce_app.repository.UserRepository;
 import com.e_commerce_app.request.UserRequest;
@@ -43,6 +46,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private CartRepository cartRepository;
+	
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -138,15 +144,29 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public ResponseData<UserResponse> deleteUserById(Long id) {
-		
+		//cart order orderdetail
 		Optional<User> userOptional = userRepository.findById(id);
 		ResponseData<UserResponse> responseData  = userOptional.isPresent() ? new ResponseData<UserResponse>(MessageConstants.USER_DELETE_SUCCESS, setData(userRepository.findById(id).get()), 200) : new ResponseData<UserResponse>(MessageConstants.USER_NOT_FOUND, null, 420);
 	    if(responseData.getStatus() == 200) { 
-	    	Optional<Cart> cartOptional = Optional.ofNullable(cartRepository.findByUserEmail(userOptional.get().getEmail()));
-	    	if(cartOptional.isPresent()) { cartRepository.deleteById(cartOptional.get().getId()); }
-	    	Optional<Order> orderOptional = Optional.ofNullable(orderRepository.findByUserEmail(userOptional.get().getEmail()));
-	    	if(orderOptional.isPresent()) { orderRepository.deleteById(orderOptional.get().getId()); }
-	    	User user = userOptional.get(); user.setActive(0); userRepository.save(user); 
+	    	List<Order> orders = orderRepository.findByUserEmail(userOptional.get().getEmail());
+	    	if(!CollectionUtils.isEmpty(orders)) {
+	    		for (Order order : orders) {
+	    			List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getId());
+	    			if(!CollectionUtils.isEmpty(orderDetails)) {
+	    				for (OrderDetail orderDetail : orderDetails) {
+							orderDetailRepository.deleteById(orderDetail.getId());
+						}
+	    			}
+	    			orderRepository.deleteById(order.getId());
+	    		}
+	    	}
+	    	List<Cart> carts = cartRepository.findByUserEmail(userOptional.get().getEmail());
+			if (!CollectionUtils.isEmpty(carts)) {
+				for (Cart cart : carts) {
+					cartRepository.deleteById(cart.getId());
+				}
+			}
+	    	userRepository.deleteById(id);		
 	    }
 		return responseData;
 	}

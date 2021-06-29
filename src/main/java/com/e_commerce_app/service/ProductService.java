@@ -7,7 +7,7 @@ import com.e_commerce_app.response.ResponseData;
 
 public interface ProductService {
 
-	ResponseData<ProductResponse> saveProduct(ProductRequest productRequest);
+	Object saveProduct(ProductRequest productRequest);
 
 	Product checkProductExistence(String name);
 

@@ -86,7 +86,7 @@ public class CartController {
 	@PostMapping("save")
 	@ApiOperation(value = "Save", notes = "Save Cart Basic Details")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<CartResponse> saveCart(@RequestBody CartRequest cartRequest) {
+	public Object saveCart(@RequestBody CartRequest cartRequest) {
 		try {
 			return cartService.saveCart(cartRequest);
 		} catch (Exception e) {

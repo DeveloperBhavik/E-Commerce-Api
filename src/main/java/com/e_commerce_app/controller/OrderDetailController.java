@@ -86,7 +86,7 @@ public class OrderDetailController {
 	@PostMapping("save")
 	@ApiOperation(value = "Save", notes = "Save Order Detail Basic Details")
 	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<OrderDetailResponse> saveOrderDetail(@RequestBody OrderDetailRequest orderDetailRequest) {
+	public Object saveOrderDetail(@RequestBody OrderDetailRequest orderDetailRequest) {
 		try {
 			return orderDetailService.saveOrderDetail(orderDetailRequest);
 		} catch (Exception e) {
