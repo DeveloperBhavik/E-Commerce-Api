@@ -3,8 +3,11 @@ package com.e_commerce_app.request;
 import com.e_commerce_app.entity.Product;
 import com.e_commerce_app.entity.User;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class CartRequest {
 
+	@ApiModelProperty(example = "null")
 	private Long id;
 	
 	private User user;

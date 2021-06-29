@@ -3,8 +3,11 @@ package com.e_commerce_app.request;
 import com.e_commerce_app.entity.Order;
 import com.e_commerce_app.entity.Product;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class OrderDetailRequest {
 
+	@ApiModelProperty(example = "null")
 	private Long id;
 	
 	private Order order;

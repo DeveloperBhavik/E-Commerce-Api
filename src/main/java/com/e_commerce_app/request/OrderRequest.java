@@ -4,8 +4,11 @@ import java.util.Date;
 
 import com.e_commerce_app.entity.User;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class OrderRequest {
 
+	@ApiModelProperty(example = "null")
 	private Long id;
 	
 	private User user;
