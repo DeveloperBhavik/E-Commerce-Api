@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e_commerce_app.entity.User;
-import com.e_commerce_app.request.UserRequest;
 import com.e_commerce_app.response.ResponseData;
 import com.e_commerce_app.response.UserResponse;
 import com.e_commerce_app.service.UserService;
@@ -53,35 +50,7 @@ public class UserController {
 		}
 	}
 	
-	/**
-	 * Save user
-	 * @param userRequest
-	 * @return
-	 */
-	@PostMapping("save")
-	@ApiOperation(value = "Save", notes = "Save User Basic Details")
-	@ApiImplicitParams(value = {@ApiImplicitParam(name = "Authorization", value = "Authorization token", defaultValue = "Bearer " , required = true, dataType = "string", paramType = "header")})
-	public ResponseData<UserResponse> saveUser(@RequestBody UserRequest userRequest) {
-		try {
-			ResponseData<UserResponse> response = (userRequest.getId() == null ? checkEmailAddressExistence(userRequest):userService.saveUser(userRequest));
-			return response;
-		} catch (Exception e) {
-			LOGGER.error("Exception Occurred When Try To Save User Details", e);
-			return new ResponseData<UserResponse>(MessageConstants.PLEASE_TRY_AGAIN, null, 420);
-		}
-	}
 	
-	/**
-	 * Check email existence
-	 * @param userRequest
-	 * @return
-	 */
-	private ResponseData<UserResponse> checkEmailAddressExistence(UserRequest userRequest) {
-		
-		User user = userService.checkEmailAddressExistance(userRequest.getEmail());
-		ResponseData<UserResponse> response = (user == null ? userService.saveUser(userRequest) : new ResponseData<UserResponse>(MessageConstants.USER_EXIST, null, 420));
-		return response;
-	}
 	
 	/**
 	 * Get user by id
